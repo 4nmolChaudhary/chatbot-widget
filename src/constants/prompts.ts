@@ -1,0 +1,21 @@
+export const PROMPTS = [
+  // sample prompts
+  'What does SculptSoft do?',
+  'Can you help me choose the right service for my project?',
+  'How does SculptSoft use AI in software development?',
+  'Can you explain your AI & ML development services?',
+  'How can Generative AI help my business?',
+  'Do you build custom AI models?',
+  'What is your process for custom software development?',
+  'Can you develop a web or mobile app for my company?',
+  'How long does a typical software project take?',
+  'What services do you offer?',
+  'Can you help set up dashboards and reporting systems?',
+  'Do you offer CI/CD and cloud infrastructure setup?',
+  'How does SculptSoft handle security in development?',
+  'Can I hire a dedicated team from SculptSoft?',
+  'What is your model for offshore outsourcing?',
+  'How does IT staff augmentation work?',
+  'I want to start a project—what’s the first step?',
+  'Can you help estimate project cost and timeline?',
+]
