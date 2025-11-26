@@ -30,3 +30,8 @@ if (import.meta.env.DEV) {
   initChatbot()
 }
 
+window.addEventListener('message', event => {
+  if (event.data === 'assistant:init') {
+    initChatbot()
+  }
+})
