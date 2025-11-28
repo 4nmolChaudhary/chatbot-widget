@@ -15,16 +15,10 @@ export default defineConfig({
     'process.env': {},
   },
   build: {
-    lib: {
-      entry: 'src/main.tsx',
-      name: 'assistant',
-      fileName: 'assistant',
-      formats: ['iife'],
-    },
+    outDir: 'dist',
+    sourcemap: false,
     rollupOptions: {
-      output: {
-        inlineDynamicImports: true,
-      },
+      input: './index.html',
     },
   },
 })

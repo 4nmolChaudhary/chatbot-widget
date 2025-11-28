@@ -1,37 +1,54 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+
 import './index.css'
+
 import App from './App.tsx'
+import Forbidden from './components/ui/forbidden.tsx'
+
+import { ACTIONS } from './constants/keys.ts'
+
+let root: ReturnType<typeof createRoot> | null = null
 
 function initChatbot() {
+  if (root) return
   let container = document.getElementById('root')
   if (!container) {
     container = document.createElement('div')
     container.id = 'root'
     document.body.appendChild(container)
   }
-
-  const root = createRoot(container)
+  root = createRoot(container)
   root.render(
     <StrictMode>
       <App />
     </StrictMode>
   )
+  if (window.parent !== window) {
+    window.parent.postMessage({ action: ACTIONS.READY }, '*')
+  }
 }
 
-// Make global only in production (bundled)
-if (typeof window !== 'undefined') {
-  ;(window as any).assistant = { init: initChatbot }
+function forbidden() {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <Forbidden />
+    </StrictMode>
+  )
 }
 
-// Auto-render in dev mode for convenience
 if (import.meta.env.DEV) {
-  console.log('🔥 dev mode → auto mounting widget')
-  initChatbot()
+  console.log('🔥 DEV MODE → auto-mounting widget')
+  const params = new URLSearchParams(window.location.search)
+  const action = params.get('action')
+  const key = params.get('key')
+  setTimeout(() => window.postMessage({ action, key }, '*'), 300)
 }
 
 window.addEventListener('message', event => {
-  if (event.data === 'assistant:init') {
-    initChatbot()
-  }
+  const { action, key } = event.data || {}
+  console.log('📨 message received →', event.data)
+  if (action === ACTIONS.INIT && key === import.meta.env.VITE_SECRET_KEY) initChatbot()
+  else forbidden()
 })
+

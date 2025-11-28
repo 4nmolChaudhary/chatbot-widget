@@ -1,4 +1,4 @@
-import { CHAT_HISTORY } from '@/constants/chat-history'
+//import { CHAT_HISTORY } from '@/constants/chat-history'
 import { create } from 'zustand'
 
 type Message = {
@@ -22,7 +22,7 @@ export const useChat = create<Chat>()(set => ({
   setIsFullScreen: payload => set({ isFullScreen: payload }),
   promptSuggestions: [],
   setPromptSuggestions: payload => set({ promptSuggestions: payload }),
-  chatHistory: CHAT_HISTORY as Message[],
+  chatHistory: [], //CHAT_HISTORY as Message[],
   setChatHistory: payload => set({ chatHistory: payload }),
   messageInput: '',
   setMessageInput: payload => set({ messageInput: payload }),
