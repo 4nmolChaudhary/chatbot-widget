@@ -1,13 +1,6 @@
 import { create } from 'zustand'
 
-interface Recorder {
-  isRecording: boolean
-  setIsRecording: (count: boolean) => void
-  audioData: Blob | null
-  setAudioData: (blob: Blob | null) => void
-  isSubmitting: boolean
-  setIsSubmitting: (count: boolean) => void
-}
+import type { Recorder } from '@/types/others'
 
 export const useRecorder = create<Recorder>()(set => ({
   isRecording: false,

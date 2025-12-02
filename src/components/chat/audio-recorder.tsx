@@ -112,7 +112,7 @@ export function AudioRecorder() {
       )}
       {isRecording && (
         <div className='w-full flex items-center gap-2'>
-          <div className='bg-red-500 animate-pulse w-9 h-9 rounded-full px-1 py-1 text-white flex items-center justify-center'>
+          <div className='bg-red-500 animate-pulse min-w-9 h-9 rounded-full px-1 py-1 text-white flex items-center justify-center'>
             <Mic className='h-4 w-4' />
           </div>
           <LiveWaveform active={isRecording} processing={isRecording} height={36} barWidth={3} barGap={2} mode='static' fadeEdges={true} barColor='blue' historySize={120} />

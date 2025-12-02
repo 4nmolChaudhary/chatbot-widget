@@ -1,21 +1,6 @@
 //import { CHAT_HISTORY } from '@/constants/chat-history'
+import type { Chat } from '@/types/chat'
 import { create } from 'zustand'
-
-type Message = {
-  role: 'user' | 'assistant'
-  content: string
-  id: string
-}
-interface Chat {
-  isFullScreen: boolean
-  setIsFullScreen: (count: boolean) => void
-  promptSuggestions: string[]
-  setPromptSuggestions: (suggestions: string[]) => void
-  chatHistory: Message[]
-  setChatHistory: (history: Message[]) => void
-  messageInput: string
-  setMessageInput: (input: string) => void
-}
 
 export const useChat = create<Chat>()(set => ({
   isFullScreen: false,
@@ -26,4 +11,6 @@ export const useChat = create<Chat>()(set => ({
   setChatHistory: payload => set({ chatHistory: payload }),
   messageInput: '',
   setMessageInput: payload => set({ messageInput: payload }),
+  isLoading: false,
+  setIsLoading: payload => set({ isLoading: payload }),
 }))

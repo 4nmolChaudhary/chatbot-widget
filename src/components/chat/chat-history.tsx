@@ -2,9 +2,10 @@ import { useRef, useEffect } from 'react'
 import { useChat } from '@/store/chat'
 
 import ReactMarkdown from 'react-markdown'
+import { TextShimmer } from '@/components/ui/text-shimmer'
 
 const ChatHistory = () => {
-  const { chatHistory } = useChat()
+  const { chatHistory, isLoading } = useChat()
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -18,7 +19,6 @@ const ChatHistory = () => {
           <div className={`rounded-md px-3 py-1 text-sm max-w-[75%] wrap-break-word text-left shadow-xs ${message.role === 'user' ? `bg-white text-foreground` : 'text-foreground bg-gray-100'}`}>
             {message.role === 'assistant' ? (
               <ReactMarkdown
-                //className="prose prose-sm dark:prose-invert max-w-none"
                 components={{
                   p: ({ children }) => <p className='mb-2 leading-relaxed last:mb-0'>{children}</p>,
                   strong: ({ children }) => <strong className='font-semibold'>{children}</strong>,
@@ -30,7 +30,7 @@ const ChatHistory = () => {
                   li: ({ children }) => <li className='ml-2'>{children}</li>,
                   h1: ({ children }) => <h1 className='text-lg font-semibold mt-3 mb-2'>{children}</h1>,
                   h2: ({ children }) => <h2 className='text-base font-semibold mt-3 mb-2'>{children}</h2>,
-                  h3: ({ children }) => <h3 className='text-sm font-semibold mt-2 mb-1'>{children}</h3>,
+                  h3: ({ children }) => <h3 className='text-base font-semibold mt-2 mb-1'>{children}</h3>,
                   a: ({ href, children }) => (
                     <a href={href} className='underline hover:opacity-80' target='_blank' rel='noopener noreferrer'>
                       {children}
@@ -45,6 +45,13 @@ const ChatHistory = () => {
           </div>
         </div>
       ))}
+      {isLoading && (
+        <div className='flex gap-3 justify-start'>
+          <div className='px-3 py-1 text-sm max-w-[75%] text-left'>
+            <TextShimmer>Loading ...</TextShimmer>
+          </div>
+        </div>
+      )}
       <div ref={messagesEndRef} />
     </div>
   )

@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 
 import App from './App.tsx'
-import Forbidden from './components/ui/forbidden.tsx'
 
 import { ACTIONS } from './constants/keys.ts'
 
@@ -29,14 +28,6 @@ function initChatbot() {
   }
 }
 
-function forbidden() {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <Forbidden />
-    </StrictMode>
-  )
-}
-
 if (import.meta.env.DEV) {
   console.log('🔥 DEV MODE → auto-mounting widget')
   const params = new URLSearchParams(window.location.search)
@@ -49,6 +40,5 @@ window.addEventListener('message', event => {
   const { action, key } = event.data || {}
   console.log('📨 message received →', event.data)
   if (action === ACTIONS.INIT && key === import.meta.env.VITE_SECRET_KEY) initChatbot()
-  else forbidden()
 })
 
