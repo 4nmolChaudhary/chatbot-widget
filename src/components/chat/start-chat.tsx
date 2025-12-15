@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useChat } from '@/store/chat'
+import { useConfig } from '@/store/config'
 
 import Orb from '@/components/ui/orb'
 import { getPromptSuggestions } from '@/apis/get-prompt-suggestions'
@@ -7,6 +8,7 @@ import { getPromptSuggestions } from '@/apis/get-prompt-suggestions'
 import { useChatManager } from '@/hooks/chat-manager'
 
 const StartChat = () => {
+  const { config } = useConfig()
   const { promptSuggestions, setPromptSuggestions } = useChat()
   const { send } = useChatManager()
   useEffect(() => {
@@ -31,12 +33,8 @@ const StartChat = () => {
           size='128px'
         />
         <div>
-          <strong className='text-black/75 text-2xl font-instrument-serif'>Welcome!</strong>
-          <div>
-            <strong className='text-black/75'>
-              Ask me anything about <span className='text-accent'>SculptSoft.</span>
-            </strong>
-          </div>
+          {config?.initialState?.title?.visible && <strong className='text-black/75 text-2xl font-instrument-serif'>{config?.initialState?.title?.value}</strong>}
+          <div>{config?.initialState?.tagline?.visible && <strong className='text-black/75'>{config?.initialState?.tagline?.value}</strong>}</div>
         </div>
       </div>
       <div className='w-full flex flex-col gap-2 justify-end items-end'>

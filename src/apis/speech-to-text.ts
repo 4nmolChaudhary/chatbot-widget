@@ -1,3 +1,5 @@
+import { ENDPOINT } from '@/constants/endpoints'
+
 export const uploadSpeechToText = async (blob: Blob) => {
   const url = import.meta.env.VITE_STT_URL
   const authKey = import.meta.env.VITE_STT_AUTH_KEY
@@ -7,7 +9,7 @@ export const uploadSpeechToText = async (blob: Blob) => {
   const formData = new FormData()
   formData.append('audio', blob)
 
-  const response = await fetch(url, {
+  const response = await fetch(`${url}/${ENDPOINT.TTS}`, {
     method: 'POST',
     headers: { 'auth-key': authKey },
     body: formData,
