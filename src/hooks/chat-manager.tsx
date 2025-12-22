@@ -2,7 +2,8 @@ import { useRef } from 'react'
 
 import type { Message } from '@/types/chat'
 import { useChat } from '@/store/chat'
-import { TOKENS } from '@/constants/chat-history'
+
+import { retrieval } from '@/apis/retrieval'
 
 export const useChatManager = () => {
   const streamingMessageId = useRef<string | null>(null)
@@ -21,9 +22,7 @@ export const useChatManager = () => {
     const updated = [...chatHistory, userMsg]
     syncRef(updated)
     setIsLoading(true)
-    await new Promise(res => setTimeout(res, 2000))
-    setIsLoading(false)
-    startStreaming()
+    await startStreaming(content)
   }
 
   const updateMessage = (id: string, partial: string) => {
@@ -31,24 +30,39 @@ export const useChatManager = () => {
     syncRef(updated)
   }
 
-  async function* mockStreamingApi() {
-    for (const chunk of TOKENS) {
-      await new Promise(r => setTimeout(r, 100))
-      yield chunk + ' '
-    }
-  }
-
-  const startStreaming = async () => {
+  const startStreaming = async (content: string) => {
     const assistantId = crypto.randomUUID()
     streamingMessageId.current = assistantId
     const assistant: Message = { id: assistantId, role: 'assistant', content: '' }
     const updated = [...chatHistoryRef.current, assistant]
 
     syncRef(updated)
-    for await (const chunk of mockStreamingApi()) {
-      updateMessage(assistantId, chunk)
+
+    const response = await retrieval(content)
+    const reader = response?.body?.getReader()
+    const decoder = new TextDecoder('utf-8')
+
+    let buffer = ''
+
+    while (true) {
+      if (!reader) break
+      const { value, done } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n')
+      buffer = lines.pop() as string
+
+      for (const line of lines) {
+        if (!line.trim()) continue
+        const data = JSON.parse(line)
+        if (data.type === 'detail_chunk') updateMessage(assistantId, data.content)
+        if (data.type === 'end') {
+          console.log('Stream finished')
+        }
+      }
     }
     streamingMessageId.current = null
+    setIsLoading(false)
   }
 
   const resetChat = () => syncRef([])
