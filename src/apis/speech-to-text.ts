@@ -3,13 +3,14 @@ import { ENDPOINT } from '@/constants/endpoints'
 export const uploadSpeechToText = async (blob: Blob) => {
   const url = import.meta.env.VITE_STT_URL
   const authKey = import.meta.env.VITE_STT_AUTH_KEY
+  const version = import.meta.env.VITE_BASE_API_VERSION
 
-  if (!url || !authKey) throw new Error('Missing env variables')
+  if (!url || !authKey || !version) throw new Error('Missing env variables')
 
   const formData = new FormData()
   formData.append('audio', blob)
 
-  const response = await fetch(`${url}/${ENDPOINT.TTS}`, {
+  const response = await fetch(`${url}/${version}/${ENDPOINT.TTS}`, {
     method: 'POST',
     headers: { 'auth-key': authKey },
     body: formData,
