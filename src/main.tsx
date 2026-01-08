@@ -29,7 +29,7 @@ function initChatbot() {
 }
 
 if (import.meta.env.DEV) {
-  console.log('🔥 DEV MODE → auto-mounting widget')
+  console.log('🔥[DEBUG]', { mode: 'dev', info: 'auto-mounting widget' })
   const params = new URLSearchParams(window.location.search)
   const action = params.get('action')
   const key = params.get('key')
@@ -38,7 +38,7 @@ if (import.meta.env.DEV) {
 
 window.addEventListener('message', event => {
   const { action, key } = event.data || {}
-  console.log('📨 message received →', event.data)
+  console.log('📩[MESSAGE]', event.data)
   if (action === ACTIONS.INIT && key === import.meta.env.VITE_SECRET_KEY) initChatbot()
 })
 

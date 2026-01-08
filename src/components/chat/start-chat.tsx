@@ -1,23 +1,14 @@
-// import { useEffect } from 'react'
-// import { useChat } from '@/store/chat'
 import { useConfig } from '@/store/config'
 
 import Orb from '@/components/ui/orb'
-// import { getPromptSuggestions } from '@/apis/get-prompt-suggestions'
+import { getPromptSuggestions } from '@/apis/get-prompt-suggestions'
 
-//import { useChatManager } from '@/hooks/chat-manager'
+import { useChatManager } from '@/hooks/chat-manager'
 
 const StartChat = () => {
   const { config } = useConfig()
-  //const { send } = useChatManager()
-  // const { promptSuggestions, setPromptSuggestions } = useChat()
-  // useEffect(() => {
-  //   ;(async () => {
-  //     const prompts = await getPromptSuggestions()
-  //     setPromptSuggestions(prompts)
-  //   })()
-  //   return () => {}
-  // }, [])
+  const { send } = useChatManager()
+  const { prompts, visible } = getPromptSuggestions(config)
 
   return (
     <div className='w-full h-full flex-1 flex flex-col items-center justify-between gap-2'>
@@ -38,11 +29,12 @@ const StartChat = () => {
         </div>
       </div>
       <div className='w-full flex flex-col gap-2 justify-end items-end'>
-        {/* {promptSuggestions.map((suggestion, index) => (
-          <button onClick={() => send(suggestion)} key={index} className='w-fit bg-white shadow-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring text-foreground inline-flex flex-1 items-center justify-center gap-1.5 rounded-md py-1 whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 px-2 h-6 text-sm cursor-pointer'>
-            {suggestion}
-          </button>
-        ))} */}
+        {visible &&
+          prompts.map((suggestion, index) => (
+            <button onClick={() => send(suggestion)} key={index} className='w-fit bg-white shadow-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring text-foreground inline-flex flex-1 items-center justify-center gap-1.5 rounded-md py-1 whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 px-2 h-6 text-sm cursor-pointer'>
+              {suggestion}
+            </button>
+          ))}
       </div>
     </div>
   )

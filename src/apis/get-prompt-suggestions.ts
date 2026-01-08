@@ -1,6 +1,8 @@
-import { PROMPTS } from '@/constants/prompts'
+import type { Output } from '@/helpers/format-data'
 
-export const getPromptSuggestions = async (): Promise<string[]> => {
-  const shuffled = [...PROMPTS].sort(() => Math.random() - 0.5)
-  return shuffled.slice(0, 4)
+export const getPromptSuggestions = (config: Output): { prompts: string[]; visible: boolean } => {
+  const chips = config?.initialState?.initialChips
+  if (!config || !chips) return { prompts: [], visible: false }
+  const { value, visible } = chips
+  return { prompts: JSON.parse(value), visible: !!visible }
 }

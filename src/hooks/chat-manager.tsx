@@ -43,7 +43,7 @@ export const useChatManager = () => {
     const decoder = new TextDecoder('utf-8')
 
     let buffer = ''
-
+    setIsLoading(false)
     while (true) {
       if (!reader) break
       const { value, done } = await reader.read()
@@ -62,7 +62,6 @@ export const useChatManager = () => {
       }
     }
     streamingMessageId.current = null
-    setIsLoading(false)
   }
 
   const resetChat = () => syncRef([])
