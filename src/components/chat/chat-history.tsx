@@ -1,11 +1,14 @@
 import { useRef, useEffect } from 'react'
 import { useChat } from '@/store/chat'
+import { useChatManager } from '@/hooks/chat-manager'
 
 import ReactMarkdown from 'react-markdown'
 import { TextShimmer } from '@/components/ui/text-shimmer'
+import PromptSuggestion from '@/components/ui/prompt-suggestion'
 
 const ChatHistory = () => {
-  const { chatHistory, isLoading } = useChat()
+  const { chatHistory, isLoading, isStreaming, promptSuggestions } = useChat()
+  const { send } = useChatManager()
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -54,6 +57,9 @@ const ChatHistory = () => {
           </div>
         </div>
       )}
+      <div className='w-full flex flex-1 flex-col gap-2 justify-end items-end'>
+        <div className='w-full flex flex-col gap-2 justify-end items-end'>{!isStreaming && promptSuggestions.map((suggestion, index) => <PromptSuggestion key={index} suggestion={suggestion} send={send} />)}</div>
+      </div>
       <div ref={messagesEndRef} />
     </div>
   )

@@ -8,7 +8,7 @@ import { retrieval } from '@/apis/retrieval'
 export const useChatManager = () => {
   const streamingMessageId = useRef<string | null>(null)
   const chatHistoryRef = useRef<Message[]>([])
-  const { setChatHistory, chatHistory, setIsLoading } = useChat()
+  const { setChatHistory, chatHistory, setIsLoading, setIsStreaming, setPromptSuggestions } = useChat()
   const isStreaming = streamingMessageId.current !== null
 
   const syncRef = (list: Message[]) => {
@@ -17,6 +17,7 @@ export const useChatManager = () => {
   }
 
   const send = async (content: string) => {
+    setPromptSuggestions([])
     const id = crypto.randomUUID()
     const userMsg: Message = { id, role: 'user', content }
     const updated = [...chatHistory, userMsg]
@@ -33,6 +34,7 @@ export const useChatManager = () => {
   const startStreaming = async (content: string) => {
     const assistantId = crypto.randomUUID()
     streamingMessageId.current = assistantId
+    setIsStreaming(true)
     const assistant: Message = { id: assistantId, role: 'assistant', content: '' }
     const updated = [...chatHistoryRef.current, assistant]
 
@@ -56,8 +58,12 @@ export const useChatManager = () => {
         if (!line.trim()) continue
         const data = JSON.parse(line)
         if (data.type === 'detail_chunk') updateMessage(assistantId, data.content)
-        if (data.type === 'end') {
-          console.log('Stream finished')
+        if (data.type === 'end') setIsStreaming(false)
+        else {
+          if (data?.suggestion_chips) {
+            const chips = data.suggestion_chips as string[]
+            setPromptSuggestions(chips)
+          }
         }
       }
     }

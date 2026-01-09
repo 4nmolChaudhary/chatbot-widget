@@ -12,4 +12,6 @@ export const useChat = create<Chat>()(set => ({
   setMessageInput: payload => set({ messageInput: payload }),
   isLoading: false,
   setIsLoading: payload => set({ isLoading: payload }),
+  isStreaming: false,
+  setIsStreaming: payload => set({ isStreaming: payload }),
 }))

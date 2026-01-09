@@ -15,4 +15,6 @@ export type Chat = {
   setMessageInput: (input: string) => void
   isLoading: boolean
   setIsLoading: (loading: boolean) => void
+  isStreaming: boolean
+  setIsStreaming: (streaming: boolean) => void
 }
