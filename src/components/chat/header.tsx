@@ -5,7 +5,6 @@ import { useConfig } from '@/store/config'
 import { deleteSession } from '@/apis/delete-session'
 
 export default function Header() {
-  const test = 'test'
   const { config, sessionId } = useConfig()
   const actions = config?.header?.action as unknown as Record<'restart' | 'close' | 'resize', { visible: boolean }>
   const { isFullScreen, setIsFullScreen, setChatHistory } = useChat()
