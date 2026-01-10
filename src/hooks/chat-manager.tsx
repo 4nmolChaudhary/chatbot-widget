@@ -2,6 +2,7 @@ import { useRef } from 'react'
 
 import type { Message } from '@/types/chat'
 import { useChat } from '@/store/chat'
+import { useConfig } from '@/store/config'
 
 import { retrieval } from '@/apis/retrieval'
 
@@ -9,6 +10,7 @@ export const useChatManager = () => {
   const streamingMessageId = useRef<string | null>(null)
   const chatHistoryRef = useRef<Message[]>([])
   const { setChatHistory, chatHistory, setIsLoading, setIsStreaming, setPromptSuggestions } = useChat()
+  const { sessionId } = useConfig()
   const isStreaming = streamingMessageId.current !== null
 
   const syncRef = (list: Message[]) => {
@@ -40,7 +42,7 @@ export const useChatManager = () => {
 
     syncRef(updated)
 
-    const response = await retrieval(content)
+    const response = await retrieval(content, sessionId)
     const reader = response?.body?.getReader()
     const decoder = new TextDecoder('utf-8')
 

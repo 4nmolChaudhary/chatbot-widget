@@ -13,7 +13,7 @@ const ChatHistory = () => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [chatHistory])
+  }, [chatHistory, isStreaming])
 
   return (
     <div className='w-full flex flex-col gap-2 h-[calc(100vh-224px)] overflow-y-auto hide-scrollbar'>

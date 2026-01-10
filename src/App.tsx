@@ -5,15 +5,18 @@ import ChatInterface from '@/components/chat/chat-interface'
 import Composer from '@/components/chat/composer'
 
 import { getUiConfig } from '@/apis/get-ui-config'
+import { generateSession } from '@/apis/generate-session'
 import { useConfig } from '@/store/config'
 
 function App() {
-  const { setConfig } = useConfig()
+  const { setConfig, setSessionId } = useConfig()
   useEffect(() => {
     const config = async () => {
       try {
         const config = await getUiConfig()
         setConfig(config)
+        const sessionId = await generateSession()
+        setSessionId(sessionId)
       } catch (error) {
         console.error('Failed to fetch UI config:', error)
       }

@@ -2,19 +2,25 @@ import { RotateCcw, X, Maximize, Minimize } from 'lucide-react'
 import { useChat } from '@/store/chat'
 import { useConfig } from '@/store/config'
 
+import { deleteSession } from '@/apis/delete-session'
+
 export default function Header() {
-  const { config } = useConfig()
+  const { config, sessionId } = useConfig()
   const actions = config?.header?.action as unknown as Record<'restart' | 'close' | 'resize', { visible: boolean }>
   const { isFullScreen, setIsFullScreen, setChatHistory } = useChat()
 
-  const onRestart = () => setChatHistory([])
+  const onRestart = async () => {
+    setChatHistory([])
+    await deleteSession(sessionId)
+  }
   const onToggleFullscreen = () => {
     setIsFullScreen(!isFullScreen)
     sendMessage('toggle-fullscreen', String(!isFullScreen))
   }
-  const onClose = () => {
+  const onClose = async () => {
     sendMessage('close-window')
     setChatHistory([])
+    await deleteSession(sessionId)
   }
   const sendMessage = (type: string, value?: string) => window.parent?.postMessage({ type, value }, '*')
   return (

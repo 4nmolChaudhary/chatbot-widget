@@ -1,6 +1,6 @@
 import { ENDPOINT } from '@/constants/endpoints'
 
-export const retrieval = async (query: string) => {
+export const retrieval = async (query: string, session_id: string) => {
   const url = import.meta.env.VITE_STT_URL
   const authKey = import.meta.env.VITE_STT_AUTH_KEY
   const version = import.meta.env.VITE_RETRIEVAL_API_VERSION
@@ -15,7 +15,7 @@ export const retrieval = async (query: string) => {
     },
     body: JSON.stringify({
       query,
-      session_id: 'lead:ys110',
+      session_id,
       language_code: 'en',
     }),
   })
