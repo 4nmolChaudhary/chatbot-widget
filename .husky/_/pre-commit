@@ -24,7 +24,7 @@ if ! npm run typecheck; then
   exit 1
 fi
 
-printf "${YELLOW}🎨 Formatting staged files...${NC}\n"
+printf "${YELLOW}🎨 Formatting staged files...${NC}\n\n"
 
 if ! npx lint-staged; then
   printf "${RED}❌ Formatting failed. Please fix Prettier errors.${NC}"

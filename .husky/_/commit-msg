@@ -1,2 +1,26 @@
-#!/usr/bin/env sh
-. "$(dirname "$0")/h"
+#!/bin/bash
+#!/bin/sh
+set -e
+
+
+MSG_FILE="$1"
+MSG="$(sed -n '1p' "$MSG_FILE")"
+
+PATTERN='^\[(FEAT|FIX|DOCS|STYLE|REFACTOR|TEST|CHORE|CLEAN|WIP)\] .+$'
+
+# Ignore merge commits
+case "$MSG" in
+  Merge*) exit 0 ;;
+esac
+
+if ! echo "$MSG" | grep -Eq "$PATTERN"; then
+  printf "\033[0;31m╔══════════════════════════════╗\033[0m\n"
+  printf "\033[0;31m║   INVALID COMMIT MESSAGE     ║\033[0m\n"
+  printf "\033[0;31m╚══════════════════════════════╝\033[0m\n\n"
+
+  printf "\033[0;31mExpected format:\033[0m [TYPE] Description\n"
+  printf "\033[0;31mAllowed types:\033[0m FEAT | FIX | DOCS | STYLE | REFACTOR | TEST | CHORE | CLEAN | WIP\n\n"
+  printf "\033[0;32mExample:\033[0m [FEAT] Implemented user authentication feature\n\n"
+
+  exit 1
+fi
