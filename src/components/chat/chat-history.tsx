@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { useChat } from '@/store/chat'
 import { useChatManager } from '@/hooks/chat-manager'
+import { useLoadingMessage } from '@/hooks/use-loading-message'
 
 import ReactMarkdown from 'react-markdown'
 import { TextShimmer } from '@/components/ui/text-shimmer'
@@ -8,6 +9,7 @@ import PromptSuggestion from '@/components/ui/prompt-suggestion'
 
 const ChatHistory = () => {
   const { chatHistory, isLoading, isStreaming, promptSuggestions } = useChat()
+  const loadingMessage = useLoadingMessage(isLoading)
   const { send } = useChatManager()
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -40,7 +42,8 @@ const ChatHistory = () => {
                         {children}
                       </a>
                     ),
-                  }}>
+                  }}
+                >
                   {message.content}
                 </ReactMarkdown>
               ) : (
@@ -53,7 +56,7 @@ const ChatHistory = () => {
       {isLoading && (
         <div className='flex gap-3 justify-start'>
           <div className='px-3 py-1 text-sm max-w-[75%] text-left'>
-            <TextShimmer>Loading ...</TextShimmer>
+            <TextShimmer>{loadingMessage}</TextShimmer>
           </div>
         </div>
       )}
