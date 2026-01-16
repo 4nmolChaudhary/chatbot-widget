@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { useChat } from '@/store/chat'
 import { useChatManager } from '@/hooks/chat-manager'
-import { useLoadingMessage } from '@/hooks/use-loading-message'
+import { useLoadingMessage } from '@/hooks/loading-message'
 
 import ReactMarkdown from 'react-markdown'
 import { TextShimmer } from '@/components/ui/text-shimmer'
