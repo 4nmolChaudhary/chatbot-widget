@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const INITIAL_MESSAGE = 'Sculptsoft Assistant is typing...'
-const ROTATING_MESSAGES = ['Checking that for you...', 'Preparing your options...']
-const INTERVAL_MS = 3000
+import { INITIAL_MESSAGE, ROTATING_MESSAGES, INTERVAL_MS } from '@/constants/messages'
 
 export const useLoadingMessage = (isLoading: boolean): string => {
   const [message, setMessage] = useState(INITIAL_MESSAGE)
