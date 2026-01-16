@@ -59,8 +59,8 @@ export const useChatManager = () => {
       for (const line of lines) {
         if (!line.trim()) continue
         const data = JSON.parse(line)
-        if (data.type === 'detail_chunk') updateMessage(assistantId, data.content)
-        if (data.type === 'end') setIsStreaming(false)
+        if (data.t === 'chunk') updateMessage(assistantId, data.c)
+        if (data.t === 'end') setIsStreaming(false)
         else {
           if (data?.suggestion_chips) {
             const chips = data.suggestion_chips as string[]
